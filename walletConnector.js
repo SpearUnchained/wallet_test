@@ -1,4 +1,3 @@
-// walletConnector.js
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet"; // Example additional wallet
@@ -22,10 +21,14 @@ async function initializeWalletSelector(wallets) {
         network: "testnet", // Change to 'mainnet' if needed
         modules: modules,
     });
+
+    console.log("initialized");
 }
 
 // Connect to the wallet and fetch the account ID
 async function connectWallet(wallets = ["meteor"]) {
+    console.log("connecting");
+
     if (!walletSelector) await initializeWalletSelector(wallets);
 
     try {
@@ -47,7 +50,7 @@ function getCurrentAccountId() {
     return currentAccountId;
 }
 
-// Expose functions to Unity via Module
+// Expose functions to Unity via Module once initialized
 Module.onRuntimeInitialized = () => {
     window.connectNEARWallet = async (walletList) => {
         const accountId = await connectWallet(walletList);
